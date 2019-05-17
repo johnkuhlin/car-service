@@ -1,0 +1,22 @@
+{
+  "name": "car-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnkuhlin/car-service.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johnkuhlin/car-service/issues"
+  },
+  "homepage": "https://github.com/johnkuhlin/car-service#readme",
+  "dependencies": {
+    "express": "^4.17.0",
+  }
+}
