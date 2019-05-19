@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
 const ds = require('./datastore.js');
 const helper = require('./helper');
 
@@ -9,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // delete appointments by id
-app.get('/delAppt/:id', ds.delAppt);
+app.post('/delAppt', ds.delAppt);
 
 // create new appointments
 app.post('/addAppt', ds.addAppt);
