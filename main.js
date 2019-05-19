@@ -1,8 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const app = express();
 const ds = require('./datastore.js');
-const maxCar = 3;
+const helper = require('./helper');
+
+const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -27,7 +28,7 @@ let newAppt = () => {
     }, random)
 };
 
-ds.init(maxCar);
+helper.initDS();
 newAppt();
 
 
