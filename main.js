@@ -16,6 +16,8 @@ app.post('/delAppt', ds.delAppt);
 app.post('/addAppt', ds.addAppt);
 
 // update the status of an existing appointment
+app.post('/updAppt', ds.updAppt);
+
 // retrieve a specific appointment from the database
 // retrieve all appointments that are scheduled between a date range and sorted by price.
 

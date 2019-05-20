@@ -2,38 +2,76 @@ const fs = require('fs');
 
 const helper = require('./helper.js');
 
-let delAppt = (req, res) => {
-    let error = helper.delAppt(req.body.id);
-    if (error) {
-        res.send({ message: error });
-    } else {
-        res.send({ message: 'appointment ' + req.body.id + ' deleted' });
+let updAppt = (req, res) => {
+    // check required input
+    if (!req.body.id) {
+        res.send({ message: 'update appointment must have id' });
+        return;
     }
-};
-
-let addAppt = (req, res) => {
     let appt = {
-        date: req.body.date,
-        time: req.body.time,
-        action: 'add',
+        id: req.body.id,
         client: req.body.client,
+        action: req.body.action,
         pickup: req.body.pickup,
         dropoff: req.body.dropoff
     };
-    let apptId = helper.addAppt(appt);
-
-    if (apptId) {
-        res.send({ message: 'appointment added', apptId: apptId });
-    } else {
-        if (appt.error) {
-            res.send({ message: appt.error });
-        } else {
-            res.send({ message: 'internal error - unable to add appointment' });
-        }
+    if (req.body.action !== 'completed') {
+        appt.action = 'update';
     }
+    if (helper.updAppt(appt)) {
+        res.send({ message: 'appointment ' + appt.id + ' updated' });
+        return;
+    }
+    res.send({ message: appt.error });
+    return;
+};
+
+let delAppt = (req, res) => {
+    // check required input
+    if (!req.body.id) {
+        res.send({ message: 'delete appointment must have id' });
+        return;
+    }
+    let appt = {
+        id: req.body.id,
+        action: 'delete'
+    }
+    if (helper.delAppt(appt)) {
+        res.send({ message: 'appointment ' + appt.id + ' deleted' });
+        return;
+    }
+    res.send({ message: appt.error });
+    return;
+};
+
+let addAppt = (req, res) => {
+    // check required input
+    if (!req.body.date || !req.body.time || !req.body.client) {
+        res.send({ message: 'add appointment must have date, time and client' });
+        return;
+    }
+    let appt = {
+        date: req.body.date,
+        time: req.body.time,
+        client: req.body.client,
+        action: 'add',
+        pickup: req.body.pickup,
+        dropoff: req.body.dropoff
+    };
+    if (helper.addAppt(appt)) {
+        res.send({ message: 'appointment added', id: appt.id });
+        return;
+    }
+    if (appt.error) {
+        res.send({ message: appt.error });
+        return;
+    }
+    res.send({ message: 'internal error - unable to add appointment' });
+    return;
 };
 
 module.exports = {
     delAppt: delAppt,
-    addAppt: addAppt
+    addAppt: addAppt,
+    updAppt: updAppt
 };
