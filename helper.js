@@ -53,7 +53,7 @@ let updAppt = (appt) => {
 
     // check if datastore exists
     if (!fs.existsSync(carDS)) {
-        appt.error = 'unable to find car ' + part[2];
+        appt.error = 'unable to find car ' + parts[2];
         return false;
     }
     let raw = fs.readFileSync(carDS);
@@ -61,11 +61,11 @@ let updAppt = (appt) => {
     let found = _.find(sched.appts, { date: parts[0], time: parts[1] });
     // check if date + time exists
     if (!found) {
-        appt.error = 'unable to find appointment ' + apptId;
+        appt.error = 'unable to find appointment ' + appt.id;
         return false;
     }
     if (!found.scheduled) {
-        appt.error = 'appointment ' + apptId + ' not scheduled';
+        appt.error = 'appointment ' + appt.id + ' not scheduled';
         return false;
     }
     if (found.completed) {
@@ -107,7 +107,7 @@ let delAppt = (appt) => {
     let found = _.find(sched.appts, { date: parts[0], time: parts[1] });
     // check if date + time exists
     if (!found) {
-        appt.error = 'unable to find appointment ' + apptId;
+        appt.error = 'unable to find appointment ' + appt.id;
         return false;
     }
     // check if data + time exists
@@ -194,9 +194,54 @@ let addAppt = (appt) => {
     return true;
 };
 
+let getAppt = (query) => {
+    let parts = query.id.split('_');
+    let carDS = dsDir + '/car_' + parts[2];
+
+    // check if datastore exists
+    if (!fs.existsSync(carDS)) {
+        query.error = 'unable to find car ' + parts[2];
+        return;
+    }
+    let raw = fs.readFileSync(carDS);
+    let sched = JSON.parse(raw);
+    let found = _.find(sched.appts, { date: parts[0], time: parts[1] });
+    // check if date + time exists
+    if (!found || (!query.full && !found.scheduled)) {
+        query.error = 'unable to find appointment ' + query.id;
+        return;
+    }
+    query.appt = found;
+    return;
+};
+
+let getAppts = (query) => {
+    query.appts = [];
+    for (let i = 1; i < maxCar; i++) {
+        let carDS = dsDir + '/car_' + i;
+        let raw = fs.readFileSync(carDS);
+        let sched = JSON.parse(raw);
+        _.forEach(sched.appts, (appt) => {
+            if (appt.date >= query.from && appt.date <= query.to) {
+                if (query.full || (!query.full && appt.scheduled)) {
+                    appt.carNum = i;
+                    query.appts.push(appt);
+                }
+            }
+        });
+    }
+    if (!query.appts.length) {
+        query.error = 'unable to find appointment';
+        return;
+    }
+    return;
+};
+
 module.exports = {
     initDS: initDS,
     addAppt: addAppt,
     delAppt: delAppt,
-    updAppt: updAppt
+    updAppt: updAppt,
+    getAppt: getAppt,
+    getAppts: getAppts
 };

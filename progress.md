@@ -1,6 +1,8 @@
 ### 2019-05-20<br />
 - update appointment - 20 minutes<br />
 - re-code with scheduled and completd flag - 30 minutes<br />
+- query by id - 20 minutes<br />
+- query by date range - 25 minutes<br />
 ### 2019-05-19<br />
 -  helper functions - 15 minutes<br />
 -  add appointment - 15 mintues<br />

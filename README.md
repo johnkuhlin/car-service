@@ -19,4 +19,12 @@ curl -H "Content-Type: application/json" -X POST -d '{"id": "2019-05-20_13:00_2"
 <br />
 ## GET<br />
 ### query by appointment id
+http://localhost:8080/appt/{id}<br />
+- example http://localhost:8080/appt/2019-05-20_13:00_2<br />
+- including deleted http://localhost:8080/appt/2019-05-20_13:00_2/full<br />
+<br />
+<br />
 ### query by date range
+http://localhost:8080/appts/{from}/{to}<br />
+- example http://localhost:8080/appts/2019-05-20/2019-05-21<br />
+- including deleted http://localhost:8080/appts/2019-05-20/2019-05-21/full<br />

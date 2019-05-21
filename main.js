@@ -19,7 +19,14 @@ app.post('/addAppt', ds.addAppt);
 app.post('/updAppt', ds.updAppt);
 
 // retrieve a specific appointment from the database
+app.get('/appt/:id', ds.getAppt)
+// retrieve a specific appointment from the database including full log
+app.get('/appt/:id/full', ds.getApptFull)
+
 // retrieve all appointments that are scheduled between a date range and sorted by price.
+app.get('/appts/:from/:to', ds.getAppts)
+// retrieve all appointments that are scheduled between a date range and sorted by price including full log
+app.get('/appts/:from/:to/full', ds.getApptsFull)
 
 
 let newAppt = () => {

@@ -70,8 +70,49 @@ let addAppt = (req, res) => {
     return;
 };
 
+let getAppt = (req, res) => {
+    let query = {
+        id: req.params.id
+    };
+    helper.getAppt(query)
+    res.send(query);
+};
+
+let getApptFull = (req, res) => {
+    let query = {
+        id: req.params.id,
+        full: true
+    };
+    helper.getAppt(query)
+    res.send(query);
+};
+
+let getAppts = (req, res) => {
+    let query = {
+        from: req.params.from,
+        to: req.params.to
+    };
+    helper.getAppts(query)
+    res.send(query);
+};
+
+let getApptsFull = (req, res) => {
+    let query = {
+        from: req.params.from,
+        to: req.params.to,
+        full: true
+    };
+    helper.getAppts(query)
+    res.send(query);
+};
+
+
 module.exports = {
     delAppt: delAppt,
     addAppt: addAppt,
-    updAppt: updAppt
+    updAppt: updAppt,
+    getAppt: getAppt,
+    getApptFull: getApptFull,
+    getAppts: getAppts,
+    getApptsFull: getApptsFull
 };
