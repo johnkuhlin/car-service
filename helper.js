@@ -4,7 +4,10 @@ const moment = require('moment');
 
 const dsDir = './datastore';
 
+const delay = 2000;
 const maxCar = 3;
+const randApptMax = 5;
+let randApptCount = 0;
 
 let _mkdir = () => {
     if (!fs.existsSync(dsDir)) {
@@ -79,6 +82,9 @@ let updAppt = (appt) => {
     if (appt.action === 'completed') {
         found.completed = true;
     } else {
+        if (appt.price) {
+            found.price = appt.price;
+        }
         _.forEach(['client', 'dropoff', 'pickup'], (field) => {
             if (appt[field]) {
                 log[field] = appt[field];
@@ -134,7 +140,7 @@ let delAppt = (appt) => {
 };
 
 // loop thru all the car number, return first car with available date + time
-let _getAvail = (date, time) => {
+let getAvail = (date, time) => {
     for (let i = 1; i < maxCar; i++) {
         let carDS = dsDir + '/car_' + i;
         let raw = fs.readFileSync(carDS);
@@ -152,7 +158,7 @@ let _getAvail = (date, time) => {
 };
 
 let addAppt = (appt) => {
-    let carNum = _getAvail(appt.date, appt.time);
+    let carNum = getAvail(appt.date, appt.time);
 
     if (!carNum) {
         appt.error = 'no car available for ' + appt.date + ' ' + appt.time;
@@ -167,6 +173,7 @@ let addAppt = (appt) => {
         let entry = {
             date: appt.date,
             time: appt.time,
+            price: appt.price,
             scheduled: false,
             logs: []
         };
@@ -234,11 +241,39 @@ let getAppts = (query) => {
         query.error = 'unable to find appointment';
         return;
     }
+    // sorty by price desc
+    query.appts = _.orderBy(query.appts, ['price'], 'desc');
     return;
+};
+
+let randAppt = () => {
+    let rand = Math.floor(Math.random() * 10);
+    return {
+        date: moment().add(rand, 'days').format('YYYY-MM-DD'),
+        time: (10 + rand).toString() + ':00',
+        client: 'John Lin',
+        action: 'add',
+        pickup: '888 fake street',
+        dropoff: '999 real avenue',
+        price: 100 + (10 * rand)
+    };
+};
+
+let randAddAppt = () => {
+    let random = Math.random() * delay;
+    setTimeout(() => {
+        addAppt(randAppt());
+        randApptCount++;
+        console.log('adding new appointment');
+        if (randApptCount < randApptMax) {
+            randAddAppt();
+        }
+    }, random)
 };
 
 module.exports = {
     initDS: initDS,
+    randAddAppt: randAddAppt,
     addAppt: addAppt,
     delAppt: delAppt,
     updAppt: updAppt,

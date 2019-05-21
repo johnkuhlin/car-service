@@ -3,6 +3,9 @@
 - re-code with scheduled and completd flag - 30 minutes<br />
 - query by id - 20 minutes<br />
 - query by date range - 25 minutes<br />
+- random add appointment - 15 minutes<br />
+- add price to appointment - 20 minutes<br />
+<br />
 ### 2019-05-19<br />
 -  helper functions - 15 minutes<br />
 -  add appointment - 15 mintues<br />

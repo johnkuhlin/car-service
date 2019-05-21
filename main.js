@@ -28,20 +28,8 @@ app.get('/appts/:from/:to', ds.getAppts)
 // retrieve all appointments that are scheduled between a date range and sorted by price including full log
 app.get('/appts/:from/:to/full', ds.getApptsFull)
 
-
-let newAppt = () => {
-    let random = Math.random() * 20000;
-    setTimeout(() => {
-//        ds.addAppt(random);
-        console.log('adding new appointment');
-        newAppt();
-    }, random)
-};
-
 helper.initDS();
-newAppt();
-
-
+helper.randAddAppt();
 
 app.listen(8080, () => {
     console.log(`Server listening on port 8080 ...`);

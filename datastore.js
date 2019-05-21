@@ -13,7 +13,8 @@ let updAppt = (req, res) => {
         client: req.body.client,
         action: req.body.action,
         pickup: req.body.pickup,
-        dropoff: req.body.dropoff
+        dropoff: req.body.dropoff,
+        price: req.body.price
     };
     if (req.body.action !== 'completed') {
         appt.action = 'update';
@@ -46,8 +47,8 @@ let delAppt = (req, res) => {
 
 let addAppt = (req, res) => {
     // check required input
-    if (!req.body.date || !req.body.time || !req.body.client) {
-        res.send({ message: 'add appointment must have date, time and client' });
+    if (!req.body.date || !req.body.time || !req.body.client || !req.body.price) {
+        res.send({ message: 'add appointment must have date, time, client and price' });
         return;
     }
     let appt = {
@@ -56,7 +57,8 @@ let addAppt = (req, res) => {
         client: req.body.client,
         action: 'add',
         pickup: req.body.pickup,
-        dropoff: req.body.dropoff
+        dropoff: req.body.dropoff,
+        price: req.body.price
     };
     if (helper.addAppt(appt)) {
         res.send({ message: 'appointment added', id: appt.id });

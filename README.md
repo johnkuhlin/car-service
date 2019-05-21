@@ -1,4 +1,9 @@
 # car-service
+## INSTALL
+- npm install<br />
+<br />
+<br />
+<br />
 ## POST<br />
 ### add appointment<br />
 curl -H "Content-Type: application/json" -X POST -d '{"client": "John Doe", "date": "2019-05-20", "time": "13:00", "pickup": "111 fake street", "dropoff": "222 real avenue"}' http://localhost:8080/addAppt
